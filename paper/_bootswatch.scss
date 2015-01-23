@@ -8,7 +8,7 @@
 
 .navbar {
   border: none;
-  @include box-shadow(0 1px 2px rgba(0,0,0,.3));
+  @include box-shadow(0 2px 4px rgba(0,0,0,.15), 0 6px 10px rgba(0,0,0,.05));
 
   &-brand {
     font-size: 24px;
@@ -38,21 +38,39 @@
 
 @mixin btn($class,$bg){
   .btn-#{$class} {
-    @include gradient-radial($bg 80%, darken($bg, 6%) 81%);
-    background-size: 200%;
+    background-repeat: no-repeat;
     background-position: 50%;
-    transition: background-size 2s;
+    background-size: 0%;
 
-    &:hover {
-      background-size: 100%;
-      border-color: darken($bg, 6%);
+    &:active, &.active {
+      background-size: 200%;
     }
 
-    &:active {
-      background-color: darken($bg, 6%);
-      @include gradient-radial(darken($bg, 6%) 10%, $bg 11%);
-      background-size: 1000%;
-      @include box-shadow(2px 2px 2px rgba(0,0,0,.3));
+    &:not(.btn-raised) {
+      background-image: -webkit-radial-gradient(circle, darken(white, 10%) 49%, transparent 50%) !important;
+      background-image: radial-gradient(circle, darken(white, 10%) 49%, transparent 50%) !important;      
+      background-color: transparent !important;
+
+      &:hover, &:focus {
+        background-color: darken(white, 6%) !important;
+      }
+
+      @if $class == 'default' {
+        color: $text-color !important;
+      } @else {
+        color: $bg !important;
+      }
+    }
+
+    &.btn-raised {
+      @if lightness($bg) > lightness(#aaa) {
+        background-image: -webkit-radial-gradient(circle, darken($bg, 6%) 49%, transparent 50%) !important;
+        background-image: radial-gradient(circle, darken($bg, 6%) 49%, transparent 50%) !important;      
+      } @else {
+        background-image: -webkit-radial-gradient(circle, lighten($bg, 6%) 49%, transparent 50%) !important;
+        background-image: radial-gradient(circle, lighten($bg, 6%) 49%, transparent 50%) !important;      
+      }
+      background-color: $bg !important;
     }
   }
 }
@@ -66,14 +84,55 @@
 
 .btn {
   text-transform: uppercase;
-  border-right: none;
-  border-bottom: none;
-  @include box-shadow(1px 1px 2px rgba(0,0,0,.3));
-  @include transition(all 0.2s);
+  border: none !important;
+  border-radius: 2px;
+  @include transition(all 500ms cubic-bezier(0.230, 1.000, 0.320, 1.000));
+
+  &:not(.btn-raised) {
+    @include box-shadow(none !important);
+  }
+
+  &.btn-raised {
+    @include box-shadow(0 2px 4px rgba(0,0,0,.2), 0 3px 10px rgba(0,0,0,.1) !important);
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus {
+    outline-color: transparent;
+    outline-style: none;
+
+    &.btn-raised {
+      @include box-shadow(0 5px 10px rgba(0,0,0,.2), 0 8px 25px rgba(0,0,0,.1) !important);
+    }
+  }
+
+  &-round {
+    position: relative;
+    border-radius: 100% !important;
+    padding: 20px;
+
+    &.btn-sm {
+      padding: 15px;
+    }
+
+    &.btn-lg {
+      padding: 24px;
+    }    
+
+    * {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  }
 
   &-link {
-    @include box-shadow(none);
-
     &:hover,
     &:focus {
       color: $brand-primary;
@@ -123,12 +182,10 @@ input[type=number],
 [type=text].form-control,
 [type=password].form-control,
 [type=email].form-control,
-[type=tel].form-control,
-[contenteditable].form-control {
+[type=tel].form-control {
   padding: 0;
   border: none;
   border-radius: 0;
-  -webkit-appearance: none;
   @include box-shadow(inset 0 -1px 0 #ddd);
   font-size: 16px;
 
@@ -141,16 +198,6 @@ input[type=number],
     @include box-shadow(none);
     border-bottom: 1px dotted #ddd;
   }
-
-  &.input {
-    &-sm {
-      font-size: $font-size-small;
-    }
-
-    &-lg {
-      font-size: $font-size-large;
-    }
-  }
 }
 
 select,
@@ -158,39 +205,12 @@ select.form-control {
   border: 0;
   border-radius: 0;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-left: 0;
-  padding-right: 0\9; // remove padding for < ie9 since default arrow can't be removed
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMVEVmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmaP/QSjAAAADHRSTlMAAgMJC0uWpKa6wMxMdjkoAAAANUlEQVR4AeXJyQEAERAAsNl7Hf3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=);
-  background-size: 13px;
-  background-repeat: no-repeat;
-  background-position: right center;
   @include box-shadow(inset 0 -1px 0 #ddd);
   font-size: 16px;
-  line-height: 1.5;
-
-  &::-ms-expand {
-    display: none;
-  }
-
-  &.input {
-    &-sm {
-      font-size: $font-size-small;
-    }
-
-    &-lg {
-      font-size: $font-size-large;
-    }
-  }
+  padding-left: 0px;
 
   &:focus {
     @include box-shadow(inset 0 -2px 0 $brand-primary);
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMVEUhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISF8S9ewAAAADHRSTlMAAgMJC0uWpKa6wMxMdjkoAAAANUlEQVR4AeXJyQEAERAAsNl7Hf3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=);
-  }
-
-  &[multiple] {
-    background: none;
   }
 }
 
@@ -270,7 +290,7 @@ select.form-control {
 
 .dropdown-menu {
   border: none;
-  @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+  @include box-shadow(0 4px 8px rgba(0,0,0,.2), 0 5px 15px rgba(0,0,0,.1));
 }
 
 // Indicators =================================================================
@@ -390,7 +410,7 @@ select.form-control {
 .panel {
   border: none;
   border-radius: 2px;
-  @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+  @include box-shadow(0 4px 8px rgba(0,0,0,.2), 0 5px 15px rgba(0,0,0,.1));
 
   &-heading {
     border-bottom: none;
@@ -443,5 +463,5 @@ select.form-control {
 
 .popover {
   border: none;
-  @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+  @include box-shadow(0 4px 8px rgba(0,0,0,.2), 0 5px 15px rgba(0,0,0,.1));
 }

@@ -14,11 +14,11 @@ $gray:                   #666;
 $gray-light:             #bbb;
 $gray-lighter:           lighten($gray-base, 93.5%); // #eee
 
-$brand-primary:         #2196F3;
-$brand-success:         #4CAF50;
-$brand-info:            #9C27B0;
-$brand-warning:         #ff9800;
-$brand-danger:          #e51c23;
+$brand-primary:         #3F51B5;
+$brand-success:         #009688;
+$brand-info:            #607D8B;
+$brand-warning:         #FFC107;
+$brand-danger:          #D32F2F;
 
 
 //== Scaffolding
@@ -102,9 +102,9 @@ $padding-xs-horizontal:     5px;
 $line-height-large:         1.33;
 $line-height-small:         1.5;
 
-$border-radius-base:        3px;
-$border-radius-large:       3px;
-$border-radius-small:       3px;
+$border-radius-base:        2px;
+$border-radius-large:       2px;
+$border-radius-small:       2px;
 
 //** Global color for active items (e.g., navs or dropdowns).
 $component-active-color:    #fff;
